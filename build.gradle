@@ -1,19 +1,67 @@
-plugins {
-    id 'java'
+println "Configuration phase, build file: ${toString()}"
+println "Gradle object id: ${gradle.hashCode()}" // Есть объект gradle
+println "Root: ${rootProject.hashCode()}, equals ${project.hashCode()}, equals ${gradle.rootProject.hashCode()}" // Есть объект gradle
+
+//4
+task hello(description: "Hello task", group: "Andrey", type: DefaultTask) {
+    println "This is Configuration phase. Task hello"
+    println "task: $description, group: $group, actions:${actions.size()}" // actions: 0
+
+    doLast {
+        println "This is Execution phase, Action1"
+    }
+
+    doFirst {
+        println "This is Execution phase, Action2"
+    }
+
+    println "task: $description, group: $group, actions:${actions.size()}" // actions: 2
+    println "Paht tasl: $path" // Выведет путь, в каком проекте находится наша task`а
 }
 
-group 'com.corp'
-version '1.0-SNAPSHOT'
+// Можно конечно делать и темиже способами что и с task`ами, но не стоит:
+//hello.doFirst {
+//    println "This is Execution phase, Action2"
+//}
 
-repositories {
-    mavenCentral()
-}
 
-dependencies {
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
-}
+//3
+//task("hello") {
+//    println "This is Configuration phase. Task hello"
+//    description = "Hello task"
+//    group = "Andrey"
+//}
 
-test {
-    useJUnitPlatform()
-}
+//1
+//task("hello")
+// tasks.findByName("hello").description = "Hello task"
+//hello.description = "Hello task"
+//hello.group = "Andrey"
+
+//2
+// hello.configure(Closure closure): Task
+//hello {
+//    println ("This is Configuration phase. Task hello")
+//    description = "Hello task"
+//    group = "Andrey"
+//}
+
+//plugins {
+//    id 'java'
+//}
+//
+//group 'com.corp'
+//version '1.0-SNAPSHOT'
+//
+//repositories {
+//    mavenCentral()
+//}
+//
+//dependencies {
+//    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
+//    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
+//}
+//
+//test {
+//    useJUnitPlatform()
+//}

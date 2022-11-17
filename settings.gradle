@@ -1,5 +1,5 @@
 rootProject.name = 'gradle'
 
-    println "Init phase, settings file: ${toString()}" // Как мы и говорили, метод toString() вызовется у объетка SettingsScript, потому что мы в нем сейчас и находимся
-    println "Gradle object id: ${gradle.hashCode()}" // Есть объект gradle
-    println "The settings.gradle is in ${settings.settingsDir}" // getSettings() {return this} Т.е. получили сами себя
+println "Init phase, settings file: ${toString()}" // Как мы и говорили, метод toString() вызовется у объетка SettingsScript, потому что мы в нем сейчас и находимся
+println "Gradle object id: ${gradle.hashCode()}" // Есть объект gradle
+println "The settings.gradle is in ${settings.settingsDir}" // getSettings() {return this} Т.е. получили сами себя
