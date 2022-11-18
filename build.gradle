@@ -1,109 +1,24 @@
-println "Configuration phase, build file: ${toString()}"
-println "Gradle object id: ${gradle.hashCode()}" // Есть объект gradle
-println "Root: ${rootProject.hashCode()}, equals ${project.hashCode()}, equals ${gradle.rootProject.hashCode()}" // Есть объект gradle
+apply from: 'script.gradle'
+apply plugin: CustomPlugin
 
-ext {
-    javaVersion = 16 // Под капотом javaVersion - это все равно строка, потому что это map, где ключем является String - синтаксический сахар Groovy
-    currentDate = LocalDate.now()
-}
-println ext.javaVersion
-println project.ext.javaVersion // Но как мы обсуждали, project можно опустить
-println javaVersion // Более того, можно опустить и project и ext - потому что все properties из блока ext а значит и все properties из DefaultExtraPropertiesExtension делегируются также и нашему объекту типа Project
-println project.javaVersion // Как видим и у объекта типа Project тоже есть эти свойства
+class CustomPlugin implements Plugin<Project> {
+    @Override
+    void apply(Project project) {
+        def map = [description: "Hello task", group: "Andrey", type: DefaultTask]
+        project.task(map, "hello") {
+            println "This is Configuration phase. Task hello"
+            println "task: $description, group: $group, actions:${actions.size()}" // actions: 0
 
-println "--- All properties:"
-println project.properties // Выводим все свойства объекта project
-println "--- System:"
-println System.getProperty("sys.example") // Обращаемся к системной проперти, которую установили через параметры в консоли
-println "Same we can use it as Project property"
-println project.projectParam1 // Проперти же у нас устанавливается в объект Project если указываем ее через флаг -P
-println projectParam1 // Можно напрямую обращаться, потому что делегируется на объект Project
+            doLast {
+                println "This is Execution phase, Action1"
+            }
 
-//4
-task hello(description: "Hello task", group: "Andrey", type: DefaultTask) {
-    println "This is Configuration phase. Task hello"
-    println "task: $description, group: $group, actions:${actions.size()}" // actions: 0
+            doFirst {
+                println "This is Execution phase, Action2"
+            }
 
-    doLast {
-        println "This is Execution phase, Action1"
-    }
-
-    doFirst {
-        println "This is Execution phase, Action2"
-    }
-
-    println "task: $description, group: $group, actions:${actions.size()}" // actions: 2
-    println "Paht tasl: $path" // Выведет путь, в каком проекте находится наша task`а
-}
-
-task first {
-    doLast {
-        println "Task 1"
+            println "task: $description, group: $group, actions:${actions.size()}" // actions: 2
+            println "Paht tasl: $path" // Выведет путь, в каком проекте находится наша task`а
+        }
     }
 }
-
-task second {
-    doLast {
-        println "Task 2"
-    }
-}
-
-task third {
-    doLast {
-        println "Task 3"
-    }
-}
-
-task fourth {
-    doLast {
-        println "Task 4"
-    }
-}
-
-// 2 <--- 4
-//fourth.dependsOn second
-//second.dependsOn first
-//fourth.finalizedBy third
-
-// 2
-// 1 <--- 4
-// 3
-fourth.dependsOn first
-fourth.dependsOn second
-fourth.dependsOn third
-first.mustRunAfter second
-
-gradle.taskGraph.whenReady { TaskExecutionGraph graph ->
-    println "----- Graph:"
-    graph.allTasks.each {
-        println "${it.name}"
-    }
-}
-
-gradle.taskGraph.beforeTask { task ->
-    println "beforeTask callBack $task"
-}
-
-gradle.taskGraph.afterTask { task ->
-    println "beforeTask callBack $task"
-}
-
-//plugins {
-//    id 'java'
-//}
-//
-//group 'com.corp'
-//version '1.0-SNAPSHOT'
-//
-//repositories {
-//    mavenCentral()
-//}
-//
-//dependencies {
-//    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
-//    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
-//}
-//
-//test {
-//    useJUnitPlatform()
-//}
