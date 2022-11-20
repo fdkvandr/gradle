@@ -1,49 +1,49 @@
-println "Configuration phase, build file: ${toString()}"
-println "Gradle object id: ${gradle.hashCode()}" // Есть объект gradle
-println "Root: ${rootProject.hashCode()}, equals ${project.hashCode()}, equals ${gradle.rootProject.hashCode()}" // Есть объект gradle
+//println "Configuration phase, build file: ${toString()}"
+//println "Gradle object id: ${gradle.hashCode()}" // Есть объект gradle
+//println "Root: ${rootProject.hashCode()}, equals ${project.hashCode()}, equals ${gradle.rootProject.hashCode()}" // Есть объект gradle
 
-ext {
-    javaVersion = 16 // Под капотом javaVersion - это все равно строка, потому что это map, где ключем является String - синтаксический сахар Groovy
-    currentDate = LocalDate.now()
-}
-println ext.javaVersion
-println project.ext.javaVersion // Но как мы обсуждали, project можно опустить
-println javaVersion // Более того, можно опустить и project и ext - потому что все properties из блока ext а значит и все properties из DefaultExtraPropertiesExtension делегируются также и нашему объекту типа Project
-println project.javaVersion // Как видим и у объекта типа Project тоже есть эти свойства
+//ext {
+//    javaVersion = 16 // Под капотом javaVersion - это все равно строка, потому что это map, где ключем является String - синтаксический сахар Groovy
+//    currentDate = LocalDate.now()
+//}
+//println ext.javaVersion
+//println project.ext.javaVersion // Но как мы обсуждали, project можно опустить
+//println javaVersion // Более того, можно опустить и project и ext - потому что все properties из блока ext а значит и все properties из DefaultExtraPropertiesExtension делегируются также и нашему объекту типа Project
+//println project.javaVersion // Как видим и у объекта типа Project тоже есть эти свойства
 
-println "--- All properties:"
-println project.properties // Выводим все свойства объекта project
-println "--- System:"
-println System.getProperty("sys.example") // Обращаемся к системной проперти, которую установили через параметры в консоли
-println "Same we can use it as Project property"
+//println "--- All properties:"
+//println project.properties // Выводим все свойства объекта project
+//println "--- System:"
+//println System.getProperty("sys.example") // Обращаемся к системной проперти, которую установили через параметры в консоли
+//println "Same we can use it as Project property"
 //println project.projectParam1 // Проперти же у нас устанавливается в объект Project если указываем ее через флаг -P
 //println projectParam1 // Можно напрямую обращаться, потому что делегируется на объект Project
 
 //4
 
-task first {
-    doLast {
-        println "Task 1"
-    }
-}
-
-task second {
-    doLast {
-        println "Task 2"
-    }
-}
-
-task third {
-    doLast {
-        println "Task 3"
-    }
-}
-
-task fourth {
-    doLast {
-        println "Task 4"
-    }
-}
+//task first {
+//    doLast {
+//        println "Task 1"
+//    }
+//}
+//
+//task second {
+//    doLast {
+//        println "Task 2"
+//    }
+//}
+//
+//task third {
+//    doLast {
+//        println "Task 3"
+//    }
+//}
+//
+//task fourth {
+//    doLast {
+//        println "Task 4"
+//    }
+//}
 
 // 2 <--- 4
 //fourth.dependsOn second
@@ -53,10 +53,10 @@ task fourth {
 // 2
 // 1 <--- 4
 // 3
-fourth.dependsOn first
-fourth.dependsOn second
-fourth.dependsOn third
-first.mustRunAfter second
+//fourth.dependsOn first
+//fourth.dependsOn second
+//fourth.dependsOn third
+//first.mustRunAfter second
 
 gradle.taskGraph.whenReady { TaskExecutionGraph graph ->
     println "----- Graph:"
@@ -65,13 +65,13 @@ gradle.taskGraph.whenReady { TaskExecutionGraph graph ->
     }
 }
 
-gradle.taskGraph.beforeTask { task ->
-    println "beforeTask callBack $task"
-}
+//gradle.taskGraph.beforeTask { task ->
+//    println "beforeTask callBack $task"
+//}
 
-gradle.taskGraph.afterTask { task ->
-    println "beforeTask callBack $task"
-}
+//gradle.taskGraph.afterTask { task ->
+//    println "beforeTask callBack $task"
+//}
 
 //plugins {
 //    id 'java'

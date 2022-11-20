@@ -2,9 +2,20 @@ plugins {
     id 'java'
 }
 
+sourceSets {
+    main {
+        java {
+            srcDir "$buildDir/generated-sources/querydsl"
+        }
+    }
+    test {
+
+    }
+}
+
 
 apply from: 'script.gradle'
-apply plugin: CustomPlugin
+//apply plugin: CustomPlugin
 
 class CustomPlugin implements Plugin<Project> {
     @Override
