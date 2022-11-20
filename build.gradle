@@ -2,6 +2,16 @@ plugins {
     id 'java'
 }
 
+repositories {
+    mavenLocal()
+    maven {
+        name "nexus andrey"
+        url "https://nexus.andrey/repository"
+    }
+    mavenCentral()
+    flatDir {}
+}
+
 sourceSets {
     main {
         java {
@@ -15,26 +25,4 @@ sourceSets {
 
 
 apply from: 'script.gradle'
-//apply plugin: CustomPlugin
 
-class CustomPlugin implements Plugin<Project> {
-    @Override
-    void apply(Project project) {
-        def map = [description: "Hello task", group: "Andrey", type: DefaultTask]
-        project.task(map, "hello") {
-            println "This is Configuration phase. Task hello"
-            println "task: $description, group: $group, actions:${actions.size()}" // actions: 0
-
-            doLast {
-                println "This is Execution phase, Action1"
-            }
-
-            doFirst {
-                println "This is Execution phase, Action2"
-            }
-
-            println "task: $description, group: $group, actions:${actions.size()}" // actions: 2
-            println "Paht tasl: $path" // Выведет путь, в каком проекте находится наша task`а
-        }
-    }
-}
