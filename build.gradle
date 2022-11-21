@@ -6,11 +6,20 @@ repositories {
     mavenCentral()
 }
 
-dependencies {
-//    add('implementation', [group: "org.springframework", name: "spring-webmvc", version: "5.3.9"])
-//    add('implementation', "org.springframework:spring-webmvc:5.3.9")
-    implementation "org.springframework:spring-mvc:5.3.9"
+configurations {
+    Configuration configurationImpl = getByName('implementation')
+    DependencySet implDependencies = configurationImpl.getDependencies()
+
+    myConfiguration {
+        description "my configuration"
+    }
+    configurationImpl.extendsFrom(myConfiguration)
 }
+
+dependencies {
+    myConfiguration 'org.springframework:spring-webmvc:5.3.24'
+}
+
 
 apply from: 'script.gradle'
 
