@@ -7,17 +7,22 @@ repositories {
 }
 
 configurations {
-    Configuration configurationImpl = getByName('implementation')
-    DependencySet implDependencies = configurationImpl.getDependencies()
-
-    myConfiguration {
-        description "my configuration"
+    all {
+        resolutionStrategy {
+            force 'org.springframework:spring-aop:5.3.23'
+        }
     }
-    configurationImpl.extendsFrom(myConfiguration)
 }
 
 dependencies {
-    myConfiguration 'org.springframework:spring-webmvc:5.3.24'
+    implementation ('org.springframework:spring-webmvc:5.3.24') {
+        transitive(false)
+        // exclude(group: 'org.springframework', module: 'spring-aop')
+    }
+
+    implementation('org.springframework:spring-aop:5.3.24') {
+//        force(true)
+    }
 }
 
 
