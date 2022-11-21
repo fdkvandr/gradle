@@ -7,9 +7,18 @@ repositories {
 }
 
 dependencies {
-    implementation platform('org.springframework.boot:spring-boot-dependencies:2.5.3')
-    implementation 'org.springframework:spring-webmvc:'
+    implementation platform('org.springframework.boot:spring-boot-dependencies:2.7.5')
+    implementation 'org.springframework:spring-webmvc'
     implementation'org.springframework:spring-aop'
+}
+
+jar {
+    manifest {
+        attributes 'Main-Class': 'com.corp.HelloWorld'
+    }
+
+    duplicatesStrategy(DuplicatesStrategy.EXCLUDE)
+    from configurations.runtimeClasspath.files.collect{zipTree(it)} // configurations.getByName('runtimeClasspath').getFiles().collect(it -> project.zipTree(it))
 }
 
 apply from: 'script.gradle'
