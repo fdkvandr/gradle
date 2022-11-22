@@ -9,16 +9,22 @@ repositories {
 dependencies {
     implementation platform('org.springframework.boot:spring-boot-dependencies:2.7.5')
     implementation 'org.springframework:spring-webmvc'
-    implementation'org.springframework:spring-aop'
+    implementation 'org.springframework:spring-aop'
+}
+
+task copyAllDependencies(type: Copy) {
+    from configurations.runtimeClasspath.files
+    into "$buildDir/libs/lib" // buildDir - поле у объекта Project, которому мы и обращаемся
 }
 
 jar {
-    manifest {
-        attributes 'Main-Class': 'com.corp.HelloWorld'
-    }
+    dependsOn copyAllDependencies
 
-    duplicatesStrategy(DuplicatesStrategy.EXCLUDE)
-    from configurations.runtimeClasspath.files.collect{zipTree(it)} // configurations.getByName('runtimeClasspath').getFiles().collect(it -> project.zipTree(it))
+    def jarsString = configurations.runtimeClasspath.files.collect {"lib/$it.name"}
+    manifest {
+        attributes 'Main-Class': 'com.corp.HelloWorld',
+                'Class-Path': jarsString.join(' ')
+    }
 }
 
 apply from: 'script.gradle'
