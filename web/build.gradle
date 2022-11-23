@@ -8,9 +8,25 @@ repositories {
 }
 
 dependencies {
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
+    implementation project(":service")
+    implementation project(":common:util")
+    compileOnly 'jakarta.servlet:jakarta.servlet-api:5.0.0'
+
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
 }
+
+war {
+    archiveName = "web-gradle.war" // Чтобы переименовать наш WAR
+}
+
+task deployTomcat(type: Copy) {
+    from war.archiveFile.get() // Берем расположение нашего WAR у этого объекта
+    into "C:/StudyProjects/ApacheTomcat/apache-tomcat-10.0.26/webapps"
+}
+
+war.finalizedBy deployTomcat // Говорим, что должен запуститься после запуска задачи war
+
 
 test {
     useJUnitPlatform()
