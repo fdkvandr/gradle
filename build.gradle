@@ -22,6 +22,10 @@ task copyAllDependencies(type: Copy) {
     into "$buildDir/libs/lib" // buildDir - поле у объекта Project, которому мы и обращаемся
 }
 
+wrapper {
+    gradleVersion "7.4"
+}
+
 jar {
     dependsOn copyAllDependencies
 
