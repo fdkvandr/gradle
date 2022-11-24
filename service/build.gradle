@@ -1,8 +1,11 @@
+//import com.corp.plugin.CustomPlugin
 plugins {
     id 'java-library'
     id 'jacoco'
+    id 'custom-corp'
 }
 
+//apply plugin: CustomPlugin
 
 repositories {
     mavenCentral()
